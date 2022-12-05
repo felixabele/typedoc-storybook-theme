@@ -1,0 +1,36 @@
+{
+  "name": "typedoc-storybook-theme",
+  "version": "0.0.1",
+  "description": "A plugin for TypeDoc that enables TypeScript API documentation to be generated in Markdown and integrated within Storybook.",
+  "main": "dist/index.js",
+  "files": [
+    "dist/"
+  ],
+  "author": "Felix Abele <felix.abele@diconium.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typedoc-plugin-markdown": ">=3.13.0",
+    "typescript": "~4.7.2"
+  },
+  "peerDependencies": {
+    "typedoc": ">=0.23.0",
+    "typedoc-plugin-markdown": ">=3.13.0"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.7"
+  },
+  "engines": {
+    "node": ">= 14"
+  },
+  "scripts": {
+    "lint": "eslint ./src --ext .ts",
+    "markdownlint": "yarn run docs:md && markdownlint ./docs/md",
+    "prepublishOnly": "yarn run lint && yarn run build && yarn run test",
+    "build": "rm -rf dist && tsc",
+    "test": "jest --colors",
+    "build-and-test": "yarn run build && yarn run test",
+    "docs": "yarn run build && yarn run docs:md && yarn run docs:html",
+    "docs:md": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-plugin-mdn-links --options ../../stub-project/typedoc-options.json --out ./docs/md",
+    "docs:html": "typedoc --options ../../stub-project/typedoc-options.json --plugin typedoc-plugin-mdn-links --out ./docs/html"
+  }
+}
