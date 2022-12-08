@@ -9,8 +9,12 @@
   "author": "Felix Abele <felix.abele@diconium.com>",
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.46.0",
+    "eslint": "^8.29.0",
     "typedoc-plugin-markdown": ">=3.13.0",
-    "typescript": "~4.7.2"
+    "typescript": "~4.7.2",
+    "typedoc": ">=0.23.0"
   },
   "peerDependencies": {
     "typedoc": ">=0.23.0",
@@ -22,15 +26,15 @@
   "engines": {
     "node": ">= 14"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felixabele/typedoc-storybook-theme.git",
+    "directory": "packages/typedoc-plugin-markdown"
+  },
+  "homepage": "https://github.com/felixabele/typedoc-storybook-theme/README.md",
   "scripts": {
     "lint": "eslint ./src --ext .ts",
-    "markdownlint": "yarn run docs:md && markdownlint ./docs/md",
-    "prepublishOnly": "yarn run lint && yarn run build && yarn run test",
-    "build": "rm -rf dist && tsc",
-    "test": "jest --colors",
-    "build-and-test": "yarn run build && yarn run test",
-    "docs": "yarn run build && yarn run docs:md && yarn run docs:html",
-    "docs:md": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-plugin-mdn-links --options ../../stub-project/typedoc-options.json --out ./docs/md",
-    "docs:html": "typedoc --options ../../stub-project/typedoc-options.json --plugin typedoc-plugin-mdn-links --out ./docs/html"
+    "prepublishOnly": "yarn run lint && yarn run build",
+    "build": "rm -rf dist && tsc"
   }
 }
