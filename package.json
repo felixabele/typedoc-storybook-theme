@@ -1,6 +1,6 @@
 {
   "name": "typedoc-storybook-theme",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A plugin for TypeDoc that enables TypeScript API documentation to be generated in Markdown and integrated within Storybook.",
   "main": "dist/index.js",
   "files": [
@@ -27,8 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/felixabele/typedoc-storybook-theme.git",
-    "directory": "packages/typedoc-plugin-markdown"
+    "url": "git+https://github.com/felixabele/typedoc-storybook-theme.git"
   },
   "homepage": "https://github.com/felixabele/typedoc-storybook-theme/README.md",
   "publishConfig": {

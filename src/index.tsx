@@ -37,7 +37,7 @@ class StorybookTheme extends MarkdownTheme {
     return this.createFullUrl(reflection.getAlias(), mapping.directory);
   }
 
-  extractNameFromUrl(url?: string, suffix: string = "md"): string {
+  extractNameFromUrl(url?: string, suffix = "md"): string {
     const regex = new RegExp("([A-Za-z0-9]+)." + suffix);
     const name = url?.match(regex);
     return name ? name[1] : "";
@@ -49,14 +49,10 @@ class StorybookTheme extends MarkdownTheme {
   override getUrls(project: ProjectReflection): UrlMapping<any>[] {
     const origUrls = super.getUrls(project);
 
-    console.log(project.children);
-
-
     origUrls
       .filter((urlMapping) => !urlMapping.model.kindString)
       .forEach((urlMapping) => {
         const name = this.extractNameFromUrl(urlMapping.url);
-        console.log(name);
         urlMapping.url = this.createFullUrl(name);
       });
 
@@ -74,13 +70,13 @@ class StorybookTheme extends MarkdownTheme {
   storybookLink(link: string): string {
     const newLink = link.replace(/\(|\)/g, "").replace(".stories.mdx", "");
     const [fileName, hash] = newLink.split("#");
-    const file = fileName.replace(/\/|_/g, "-").toLowerCase();
+    const file = fileName.replace(/\W/g, "-").toLowerCase();
     return hash ? `(#${hash})` : `(?path=/story/${file}--page)`;
   }
 
   storybookLinksReplacement(content: string): string {
     const links =
-      content.match(/\(([A-Za-z0-9_\:\/\.\-]+).stories.mdx.*?\)/gm) || [];
+      content.match(/\(([A-Za-z0-9_:/.\-\s]+).stories.mdx.*?\)/gm) || [];
     let newContent = content;
     links.forEach((link) => {
       newContent = newContent.replace(link, this.storybookLink(link));
@@ -95,7 +91,7 @@ class StorybookTheme extends MarkdownTheme {
 
   override render(page: PageEvent<Reflection>): string {
     let renderedPage: string = super.render(page);
-    let path = page.url
+    const path = page.url
       .replace("modules.stories.mdx", "modules-index")
       .replace(".stories.mdx", "");
     renderedPage = `<Meta title='${path}' />\n\n${renderedPage}`;
@@ -195,5 +191,20 @@ export function load(app: Application) {
     name: "preserveAnchorCasing",
     type: ParameterType.Boolean,
     defaultValue: false,
+  });
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] Specify the Type Declaration Render Style",
+    name: "objectLiteralTypeDeclarationStyle",
+    type: ParameterType.String,
+    defaultValue: "table",
+    validate: (x) => {
+      const availableValues = ["table", "list"];
+      if (!availableValues.includes(x)) {
+        throw new Error(
+          `Wrong value for objectLiteralTypeDeclarationStyle, the expected value is one of ${availableValues}`
+        );
+      }
+    },
   });
 }
